@@ -1,8 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 
+interface Post {
+    id: number;
+    title: string;
+}
+
 export default function Posts() {
-    const [posts, setPosts] = useState<{id: number, title: string}[]>([]);
+    const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
       fetch("http://localhost:8080/api/v1/posts")
