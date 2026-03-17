@@ -1,7 +1,7 @@
 import PostDetail from "@/component/features/posts/post-detail";
 import { getPostDetail } from "@/lib/service/post";
 
-export default async function PostPage({
+export default async function Detail({
     params,
 }: {
     params: Promise<{ id: string }>;

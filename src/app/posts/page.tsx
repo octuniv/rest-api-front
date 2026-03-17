@@ -1,7 +1,7 @@
 import PostList from "@/component/features/posts/post-list";
 import { getPostList } from "@/lib/service/post";
 
-export default async function PostsPage() {
+export default async function List() {
   try {
     const posts = await getPostList();
     return <PostList posts={posts} />;
