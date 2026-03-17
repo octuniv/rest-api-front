@@ -1,7 +1,5 @@
-"use client";
-
+import { Post } from "@/lib/schemas/post";
 import Link from "next/link";
-import { Post } from "./post-detail";
 
 export default function PostList({ posts }: { posts: Post[] }) {
   return (

@@ -1,10 +1,4 @@
-"use client";
-
-export interface Post {
-    id: number,
-    title: string,
-    content: string,
-};
+import { Post } from "@/lib/schemas/post";
 
 export default function PostDetail({post} : {post : Post}) {
       return <div className="flex flex-col gap-8 items-center">
