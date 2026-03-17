@@ -33,7 +33,7 @@ export default function RootLayout({
         <header>
           <nav className="flex gap-4">
             <Link href="/">Home</Link>
-            <Link href="/list">List</Link>
+            <Link href="/posts">List</Link>
           </nav>
         </header>
         <main className="flex-grow flex justify-center items-center">{children}</main>
