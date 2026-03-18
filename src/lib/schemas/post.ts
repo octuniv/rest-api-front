@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ActionState } from './common';
 
 export const postSchema = z.object({
   id: z.number().int().positive(),
@@ -31,6 +32,7 @@ export const postDeleteResSchema = z.object({
   resultCode: z.string(),
   data: z.unknown().optional().nullable(),
 });
+
 export const createPostSchema = z.object({
   title: z
     .string()
@@ -51,8 +53,5 @@ export type PostWriteRes = z.infer<typeof postWriteResSchema>;
 export type PostModifyRes = z.infer<typeof postModifyResSchema>;
 export type PostDeleteRes = z.infer<typeof postDeleteResSchema>;
 
-export type PostCreateState = {
-  error?: string;
-  fieldErrors?: Record<string, string>;
-  formData?: { title: string; content: string };
-};
+export type PostCreateState = ActionState<{ title: string; content: string }>;
+export type PostDeleteState = ActionState<undefined>;

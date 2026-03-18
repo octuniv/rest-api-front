@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} 
-        antialiased !bg-red-300 border-2 border-black min-h-screen
+        antialiased border-2 border-black min-h-screen
         flex flex-col`}
       >
         <header>

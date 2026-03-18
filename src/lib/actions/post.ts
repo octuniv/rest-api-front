@@ -4,7 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createPost, deletePost, updatePost } from '../service/post';
-import { PostCreateState } from '../schemas/post';
+import { PostCreateState, PostDeleteState } from '../schemas/post';
 
 export async function createPostAction(prevState: PostCreateState, formData: FormData
 
@@ -44,12 +44,28 @@ export async function updatePostAction(id: number, formData: FormData) {
   }
 }
 
-export async function deletePostAction(id: number) {
+export async function deletePostAction(
+  id: number,
+  prevState: PostDeleteState
+): Promise<PostDeleteState> {
+  if (!Number.isFinite(id) || id <= 0) {
+    return {
+      ...prevState,
+      success: false,
+      error: "유효하지 않은 게시글 ID 입니다.",
+    };
+  }
+
   try {
     await deletePost(id);
-    revalidatePath('/posts');
+    revalidatePath("/posts");
     revalidatePath(`/posts/${id}`);
+    return { success: true, error: undefined, fieldErrors: undefined, formData: undefined };
   } catch (error) {
-    throw error;
+    return {
+      ...prevState,
+      success: false,
+      error: error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.",
+    };
   }
 }

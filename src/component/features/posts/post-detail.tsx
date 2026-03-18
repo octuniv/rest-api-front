@@ -1,4 +1,5 @@
 import { Post } from "@/lib/schemas/post";
+import PostDeleteButton from "./post-delete";
 
 export default function PostDetail({post} : {post : Post}) {
       return <div className="flex flex-col gap-8 items-center">
@@ -6,6 +7,7 @@ export default function PostDetail({post} : {post : Post}) {
       <div>
           <h1>{post.title}</h1>
           <div>{post.content}</div>
+          <PostDeleteButton id={post.id}/>
       </div>
   </div>;
 }
