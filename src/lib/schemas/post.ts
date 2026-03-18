@@ -27,12 +27,6 @@ export const postModifyResSchema =  z.object({
   }).optional().nullable(),
 });
 
-export const postDeleteResSchema = z.object({
-  msg: z.string(),
-  resultCode: z.string(),
-  data: z.unknown().optional().nullable(),
-});
-
 export const createPostSchema = z.object({
   title: z
     .string()
@@ -51,7 +45,6 @@ export type CreatePostInput = z.infer<typeof createPostSchema>;
 export type UpdatePostInput = z.infer<typeof updatePostSchema>;
 export type PostWriteRes = z.infer<typeof postWriteResSchema>;
 export type PostModifyRes = z.infer<typeof postModifyResSchema>;
-export type PostDeleteRes = z.infer<typeof postDeleteResSchema>;
 
 export type PostCreateState = ActionState<{ title: string; content: string }>;
 export type PostDeleteState = ActionState<undefined>;

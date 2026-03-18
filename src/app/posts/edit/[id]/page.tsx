@@ -16,7 +16,7 @@ export default async function ModifyPage({
     const numericId = Number(id);
 
     try {
-        await getPostDetail(id);
+        await getPostDetail(numericId);
     } catch (error) {
         notFound();
     }

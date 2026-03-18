@@ -1,6 +1,6 @@
 'use server';
 
-import { CreatePostInput, createPostSchema, postDeleteResSchema, postModifyResSchema, postSchema, PostUpdateState, postWriteResSchema, UpdatePostInput, updatePostSchema, type Post } from '@/lib/schemas/post';
+import { CreatePostInput, createPostSchema, postModifyResSchema, postSchema, PostUpdateState, postWriteResSchema, UpdatePostInput, updatePostSchema, type Post } from '@/lib/schemas/post';
 import { z } from 'zod';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -20,11 +20,7 @@ export async function getPostList(): Promise<Post[]> {
     return z.array(postSchema).parse(data);
 }
 
-export async function getPostDetail(id: string): Promise<Post> {
-    if (!id || typeof id !== 'string') {
-        throw new Error('Invalid post ID');
-    }
-
+export async function getPostDetail(id: number): Promise<Post> {
     const res = await fetch(`${API_URL}/posts/${id}`, {
         next: { revalidate: 60 },
         headers: { 'Content-Type': 'application/json' },
@@ -142,6 +138,4 @@ export async function deletePost(id: number): Promise<void> {
     if (!res.ok) {
         throw new Error(`Failed to delete post: ${res.status}`);
     }
-    const response = await res.json();
-    postDeleteResSchema.parse(response);
 }

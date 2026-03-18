@@ -59,14 +59,6 @@ export async function deletePostAction(
   id: number,
   prevState: PostDeleteState
 ): Promise<PostDeleteState> {
-  if (!Number.isFinite(id) || id <= 0) {
-    return {
-      ...prevState,
-      success: false,
-      error: "유효하지 않은 게시글 ID 입니다.",
-    };
-  }
-
   try {
     await deletePost(id);
     revalidatePath("/posts");

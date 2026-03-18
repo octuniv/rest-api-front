@@ -1,4 +1,5 @@
 import PostDetail from "@/component/features/posts/post-detail";
+import { getCommentList } from "@/lib/service/comment";
 import { getPostDetail } from "@/lib/service/post";
 import { notFound } from "next/navigation";
 
@@ -16,8 +17,9 @@ export default async function Detail({
     const numericId = Number(id);
     
     try {
-        const post = await getPostDetail(id);
-        return <PostDetail post={post} />;
+        const post = await getPostDetail(numericId);
+        const postComments = await getCommentList(numericId);
+        return <PostDetail post={post} postComments={postComments}/>;
     } catch (error) {
         return (
             <div className="p-4 text-red-500">

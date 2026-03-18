@@ -1,8 +1,12 @@
 import { Post } from "@/lib/schemas/post";
 import PostDeleteButton from "./post-delete";
 import Link from "next/link";
+import { Comment } from "@/lib/schemas/comment";
+import CommentList from "../comment/comment-list";
 
-export default function PostDetail({ post }: { post: Post }) {
+export default function PostDetail({ 
+    post, postComments 
+}: { post: Post, postComments: Comment[] }) {
   return (
     <div className="flex flex-col gap-8 items-center max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold">{post.id}번 글 상세페이지</h1>
@@ -24,6 +28,8 @@ export default function PostDetail({ post }: { post: Post }) {
           </div>
         </div>
       </div>
+
+      <CommentList comments={postComments} postId={post.id}/>
       
       <Link
         href="/posts"
