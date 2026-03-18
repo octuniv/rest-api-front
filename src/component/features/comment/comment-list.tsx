@@ -1,5 +1,6 @@
 import { Comment } from "@/lib/schemas/comment";
-import CommentDetail from "./comment-detail";
+import CommentItem from "./comment-item";
+import CommentCreateForm from "./comment-create";
 
 export default function CommentList({ comments, postId
 
@@ -13,10 +14,15 @@ export default function CommentList({ comments, postId
             {comments.length > 0 && (
                 <ul className="flex flex-col gap-2">
                     {comments.map((comment) => (
-                        <CommentDetail key={comment.id} comment={comment} postId={postId} />
+                        <CommentItem 
+                        key={`${comment.id}-${comment.modifyDate.getTime()}`}
+                        comment={comment} 
+                        postId={postId} />
                     ))}
                 </ul>
             )}
+
+            <CommentCreateForm postId={postId} />
         </>
     );
 }

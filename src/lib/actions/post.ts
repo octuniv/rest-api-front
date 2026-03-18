@@ -46,7 +46,7 @@ export async function updatePostAction(id: number, prevState: PostUpdateState, f
     return {
       ...prevState,
       success: false,
-      error: error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.",
+      error: error instanceof Error ? error.message : "수정 중 오류가 발생했습니다.",
     };
   }
 
