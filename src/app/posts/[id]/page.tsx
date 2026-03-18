@@ -1,13 +1,21 @@
 import PostDetail from "@/component/features/posts/post-detail";
 import { getPostDetail } from "@/lib/service/post";
+import { notFound } from "next/navigation";
 
 export default async function Detail({
     params,
 }: {
     params: Promise<{ id: string }>;
 }) {
+    const { id } = await params;
+    
+    if (!id || !/^\d+$/.test(id) || Number(id) <= 0) {
+        notFound();
+    }
+
+    const numericId = Number(id);
+    
     try {
-        const { id } = await params;
         const post = await getPostDetail(id);
         return <PostDetail post={post} />;
     } catch (error) {

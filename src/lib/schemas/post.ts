@@ -55,3 +55,4 @@ export type PostDeleteRes = z.infer<typeof postDeleteResSchema>;
 
 export type PostCreateState = ActionState<{ title: string; content: string }>;
 export type PostDeleteState = ActionState<undefined>;
+export type PostUpdateState = ActionState<{ title: string; content: string }>;

@@ -1,6 +1,6 @@
 'use server';
 
-import { CreatePostInput, createPostSchema, postDeleteResSchema, postModifyResSchema, postSchema, postWriteResSchema, updatePostSchema, type Post } from '@/lib/schemas/post';
+import { CreatePostInput, createPostSchema, postDeleteResSchema, postModifyResSchema, postSchema, PostUpdateState, postWriteResSchema, UpdatePostInput, updatePostSchema, type Post } from '@/lib/schemas/post';
 import { z } from 'zod';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -87,25 +87,50 @@ export async function createPost(input: CreatePostInput): Promise<{ success: boo
 }
 
 
-export async function updatePost(id: number, input: CreatePostInput): Promise<Post> {
-    const validated = updatePostSchema.parse({ id, ...input });
+export async function updatePost(id: number, input: UpdatePostInput
+): Promise<{ success: boolean; data?: Post; error?: string; fieldErrors?: Record<string, string> }> {
+    const validated = updatePostSchema.safeParse(input);
 
-    const res = await fetch(`${API_URL}/posts/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validated),
-    });
+    if (!validated.success) {
+        const fieldErrors = validated.error.issues.reduce((acc, issue) => {
+            const field = issue.path.join('.');
+            acc[field] = issue.message;
+            return acc;
+        }, {} as Record<string, string>);
 
-    if (!res.ok) {
-        throw new Error(`Failed to update post: ${res.status}`);
+        return {
+            success: false,
+            error: '입력값을 확인해주세요',
+            fieldErrors
+        };
     }
 
-    const response = await res.json();
+    try {
+        const res = await fetch(`${API_URL}/posts/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(validated.data),
+        });
+    
+        if (!res.ok) {
+            throw new Error(`Failed to update post: ${res.status}`);
+        }
+    
+        const response = await res.json();
+    
+        const parsed = postModifyResSchema.parse(response);
+        if (!parsed.data?.postDto) throw new Error('Invalid response format');
+    
+        return { success: true, data: postSchema.parse(parsed.data.postDto) };
+    } catch (error) {
+        console.error('[PostService] updatePost error:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : '게시글 수정에 실패했습니다'
+        };
+    }
 
-    const parsed = postModifyResSchema.parse(response);
-    if (!parsed.data?.postDto) throw new Error('Invalid response format');
-
-    return postSchema.parse(parsed.data.postDto);
+    
 
 }
 
